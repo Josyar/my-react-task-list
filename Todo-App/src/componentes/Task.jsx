@@ -1,24 +1,43 @@
 import React, { useState } from 'react';
 
-const Task = ({ name, initialState }) => {
-  const [completed, setCompleted] = useState(initialState);
+function Task({ task, onComplete, onDelete, onEdit }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(task.text);
 
-  const toggleCompletion = () => {
-    setCompleted(!completed);
+  const handleEdit = () => {
+    onEdit(task.id, editedText);
+    setIsEditing(false);
   };
 
   return (
-    <div>
+    <form className="task">
       <input
         type="checkbox"
-        checked={completed}
-        onChange={toggleCompletion}
+        checked={task.completed}
+        onChange={() => onComplete(task.id)}
       />
-      <span style={{ textDecoration: completed ? 'line-through' : 'none' }}>
-        {name}
-      </span>
-    </div>
+      {isEditing ? (
+        <>
+          <input
+            type="text"
+            value={editedText}
+            onChange={(e) => setEditedText(e.target.value)}
+          />
+          <button onClick={handleEdit}>Guardar</button>
+        </>
+      ) : (
+        <>
+          <span
+            style={{ textDecoration: task.completed ? 'line-through' : 'none' }}
+          >
+            {task.text}
+          </span>
+          <button onClick={() => setIsEditing(true)}>Editar</button>
+          <button onClick={() => onDelete(task.id)}>Borrar</button>
+        </>
+      )}
+    </form>
   );
-};
+}
 
 export default Task;

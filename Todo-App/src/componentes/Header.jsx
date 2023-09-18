@@ -1,5 +1,6 @@
-export default function Header ({text}) {
-    return (
-        <h1>TO-DO List</h1>
-    )
+function Header() {
+  return (
+      <h1>TO-DO List</h1>
+  );
 }
+export default Header;
